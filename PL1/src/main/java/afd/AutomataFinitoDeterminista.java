@@ -58,24 +58,22 @@ public class AutomataFinitoDeterminista {
             estado = getEstados().get(index);
             getMatriz().put(estado, new HashMap<Character, Integer>()); //Añadimos con put
         }
-        //Una vez que tengamos la matriz principal hecha, tenemos que ir a por la anidada
-
     }
 
-    //Método para ver el siguientr paso
-    public void siguientePaso(){
-        //Sería leer de la matriz dados un estado y un carcater, con estos dos datos tendriamos que ir a la matriz
-        //y leer cual es el siguiente estado al que nos estaremos metiendo
+    //Añadimos el estado en la posicion que corresponde
+    public void cargarMatriz(int index, char caracter, int estado){
+        getMatriz().get(index).put(caracter, estado);
     }
 
+    //Método para ver el siguiente paso
+    public Integer getSiguientePaso(int estado, char caracter){
+        return getMatriz().get(estado).get(caracter);
+    }
 
-
-
-
-
-
-
-
+    //Método para ver si el estado es final
+    public boolean isFinal(int estado){
+        return getEstadosFinales().contains(estado);
+    }
 
     //Métodos get y set
     public List<Character> getAlfabeto() {
