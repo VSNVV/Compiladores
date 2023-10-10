@@ -31,11 +31,22 @@ public class MaquinaEstados {
     }
 
     public boolean compruebaCadena(String cadena){
+        this.inicializa(); //Reseteamos para comprobar la cadena
+        boolean resultado = false;
         try{
-            this.acepta();
-
+            for(int pos = 0; pos < cadena.length(); pos++){
+                char caracter = cadena.charAt(pos);
+                this.acepta(caracter);
+                if(this.isFinal()){
+                    resultado = true;
+                }
+            }
         }
-        catch(){}
+        catch(Exception e){
+            resultado = false;
+        }
+
+        return resultado;
     }
 
 
