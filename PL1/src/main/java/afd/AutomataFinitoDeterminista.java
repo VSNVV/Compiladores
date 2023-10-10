@@ -9,7 +9,7 @@ public class AutomataFinitoDeterminista {
     private final List<Character> alfabeto; //Lista de elementos
     private List<Integer> estados; //Los estados serán representados mediante enteros
     private List<Integer> estadosFinales; //Almacena los estados finales
-    private Integer estadoInicial;
+    private Integer estadoInicial; //Almacena el estado inicial
     private HashMap<Integer, HashMap<Character, Integer>> matriz; //Matriz de estados
 
     //Métodos de la clase AutomataFinitoDeterminista
@@ -24,30 +24,30 @@ public class AutomataFinitoDeterminista {
     }
 
     //Método para cargar el alfabeto
-    public void cargaAlfabeto(){
-        //Posible boceto --> meterle como parámetro una variable de tipo String y de ahi bailar como vinisiu o rei, sacando
-        //el for simplemente midiendo cuanto mide nuestro string
-
+    public void cargaAlfabeto(String alfabeto){
+        //Añade el alfabeto a la lista de alfabeto recorriendo la cadena posición a posición
+        for(int pos = 0; pos < alfabeto.length(); pos++){
+            getAlfabeto().add(alfabeto.charAt(pos));
+        }
     }
 
     //Método para cargar los estados
-    public void cargaEstados(){
-        //Posible boceto --> Igual que la funcion de arriba, pero en este caso los estados pueden ser numeros enteros
-        //consecutivos y en este caso no haría falta meter ningún parámetro, simplemente podemos ahcer un for que
-        //recorra ciertos numeros y que nos la sude completamente
+    public void cargaEstados(List<Integer> listaEstados){
+        //Recorre la listaEstados y los añade a la del Autómata
+        for (int estado : listaEstados) {
+            getEstados().add(estado);
+        }
     }
 
     //Método para establecer el estado inicial
     public void estableceEstadoInicial(int estadoInicial){
-        //Simplemente establecemos el estado inicial usando el setter que creamos mas abajo:
+        //Indica el estado inicial por el que empieza el Autómata
         setEstadoInicial(estadoInicial);
     }
 
     //Método para establecer los estados finales
-    public void estableceEstadosFinales(){
-        //Posible boceto --> Aqui podems tener muchos estados finales, asi que de alguna manera tenemos que pasarle
-        //una lista con todos los estados finales que podemos tener, entonces harmeos un for con todos los estados
-        //finales que tengamos dentro de una lista
+    public void estableceEstadosFinales(int estado){
+        getEstadosFinales().add(estado); //Añade el estado a la lista de estados finales
     }
 
     //Método para inicializar la matriz
@@ -60,7 +60,7 @@ public class AutomataFinitoDeterminista {
         }
     }
 
-    //Añadimos el estado en la posicion que corresponde
+    //Añadimos el estado en la posición que corresponde
     public void cargarMatriz(int index, char caracter, int estado){
         getMatriz().get(index).put(caracter, estado);
     }
