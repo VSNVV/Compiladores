@@ -26,10 +26,12 @@ public class MaquinaEstados {
         }
     }
 
+    //Método para comprobar si el estado actual es final
     public boolean isFinal(){
         return getAFD().isFinal(getEstadoActual());
     }
 
+    //Método para comprobar si una cadena es válida
     public boolean compruebaCadena(String cadena){
         this.inicializa(); //Reseteamos para comprobar la cadena
         boolean resultado = false;
@@ -45,10 +47,14 @@ public class MaquinaEstados {
         catch(Exception e){
             resultado = false;
         }
-
         return resultado;
     }
 
+    //Método para generar cadenas válidas
+    public void generaCadenasValidas(){
+        this.inicializa(); //Reseteamos la máquina de estados al estado inicial del autómata
+
+    }
 
     //Métodos get y set
 
