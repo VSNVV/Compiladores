@@ -18,6 +18,7 @@ public class AutomataFinitoDeterminista {
     public AutomataFinitoDeterminista(String alfabeto, List<Integer> listaEstados, List<Integer> listaEstadosFinales){
         this.alfabeto = new ArrayList<>();
         this.estadoInicial = 0;
+        this.matriz = new HashMap<>();
         this.cargaAlfabeto(alfabeto);
         this.cargaEstados(listaEstados);
         this.cargaEstadosFinales(listaEstadosFinales);
