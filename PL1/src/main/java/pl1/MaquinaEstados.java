@@ -1,5 +1,9 @@
 package pl1;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class MaquinaEstados {
     //Atributos de la clase MaquinaEstados
     private Integer estadoActual = 0;
@@ -20,15 +24,9 @@ public class MaquinaEstados {
 
     //Método para aceptar carcateres
     public void acepta(char caracter){
-
         int estadoTemporal = getAFD().getSiguientePaso(getEstadoActual(), caracter);
         setEstadoActual(getAFD().getSiguientePaso(getEstadoActual(), caracter));
-        if(getEstadoActual() != null){
-            setEstadoActual(estadoTemporal);
-        }
-        else{
-            throw new RuntimeException();
-        }
+        setEstadoActual(estadoTemporal);
     }
 
     //Método para comprobar si el estado actual es final
@@ -41,8 +39,11 @@ public class MaquinaEstados {
         this.inicializa(); //Reseteamos la máquina de estados al estado inicial de su autómata para empezar donde corresponde
         for(int pos = 0; pos < cadena.length(); pos++){
             char carcater = cadena.charAt(pos); //Cogemos el carácter que corresponda según la iteración
-            int estadoSiguiente = getAFD().getSiguientePaso(getEstadoActual(), carcater); //Pasamos del estado actual al siguiente
-            setEstadoActual(estadoSiguiente); //Estamos en el estado siguiente
+            try{
+                this.acepta(carcater); //Pasamos del estado actual al siguiente
+            }catch(Exception e){
+                return false;
+            }
             //Tenemos que comprobar si el estado en el que estamos es final
             if(isFinal()){
                 //En caso de que sí lo sea, la cadena ya será válida
@@ -55,8 +56,31 @@ public class MaquinaEstados {
 
     //Método para generar cadenas válidas
     public void generaCadenasValidas(){
-        this.inicializa(); //Reseteamos la máquina de estados al estado inicial del autómata
+        int numCadenasValidas = 0;
+        Random numAleatorio = new Random();
+        List<String> listaCadenas = new ArrayList<>();
+        StringBuilder alfabeto = new StringBuilder(); //Alfabeto a usar
 
+        for(int pos = 0; pos < getAFD().getAlfabeto().size(); pos++){
+            //Dependiendo del autómata el alfabeto será uno u otro
+            alfabeto.append(getAFD().getAlfabeto().get(pos));
+        }
+        while(numCadenasValidas < 100){
+            this.inicializa(); //Reseteamos la máquina de estados al estado inicial del autómata
+            int longitudMaxCadena = numAleatorio.nextInt(1, 11);
+            StringBuilder cadena = new StringBuilder(); //Cadena a analizar
+            for(int i = 0; i < longitudMaxCadena; i++){
+                int indiceAleatorio = numAleatorio.nextInt(0, alfabeto.length()); //Generamos un número aleatorio entre el 0 y la longitud del alfabeto
+                char caracter = alfabeto.charAt(indiceAleatorio);
+                cadena.append(caracter);
+            }
+            if(!listaCadenas.contains(cadena.toString()) && compruebaCadena(cadena.toString())){
+                //Se verifica que la cadena no está en la lista de cadenas válidas y que es válida
+                listaCadenas.add(cadena.toString());
+                System.out.println(cadena);
+                numCadenasValidas++;
+            }
+        }
     }
 
     //Métodos get y set
