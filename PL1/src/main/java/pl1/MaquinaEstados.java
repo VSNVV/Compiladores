@@ -22,7 +22,7 @@ public class MaquinaEstados {
         setEstadoActual(getAFD().getEstadoInicial());
     }
 
-    //Método para aceptar carcateres
+    //Método para aceptar caracteres (saltar a un siguiente estado)
     public void acepta(char caracter){
         int estadoTemporal = getAFD().getSiguientePaso(getEstadoActual(), caracter);
         setEstadoActual(getAFD().getSiguientePaso(getEstadoActual(), caracter));
@@ -77,8 +77,8 @@ public class MaquinaEstados {
             if(!listaCadenas.contains(cadena.toString()) && compruebaCadena(cadena.toString())){
                 //Se verifica que la cadena no está en la lista de cadenas válidas y que es válida
                 listaCadenas.add(cadena.toString());
-                System.out.println(cadena);
                 numCadenasValidas++;
+                System.out.println(numCadenasValidas + " --> " + cadena);
             }
         }
     }
@@ -95,9 +95,5 @@ public class MaquinaEstados {
 
     public AutomataFinitoDeterminista getAFD() {
         return afd;
-    }
-
-    public void setAFD(AutomataFinitoDeterminista AFD) {
-        this.afd = AFD;
     }
 }
