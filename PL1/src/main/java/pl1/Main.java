@@ -14,9 +14,12 @@ public class Main {
                         \t\t--------------------=[ELECCION DE AUTOMATA]=--------------------
                         \t1. Automata 1
                         \t2. Automata 2
+                        \t3. Salir del programa
 
                         Introduce el numero del automata a elegir:\s""");
                 String automata = entrada.nextLine();
+                if(Integer.parseInt(automata) == 3)
+                    break;
                 MaquinaEstados me = gestor.eleccionMaquinaEstados(Integer.parseInt(automata));
                 System.out.println("\n\n");
                 //Una vez que hayamos elegido autómata, tenemos que elegir una operación a realizar:
@@ -45,14 +48,13 @@ public class Main {
                 }
                 else if(Integer.parseInt(operacion) == 3){
                     //Se verifica que se desea salir del programa
-                    System.out.println("Saliendo...");
                     corriendo = false;
                 }
             }catch(Exception e){
                 System.out.println("Eleccion erronea, volviendo a empezar...");
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
-
+        System.out.println("Saliendo...");
     }
 }
