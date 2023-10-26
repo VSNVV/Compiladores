@@ -37,6 +37,7 @@ public class Gestor {
         //UNa vez creados los autómatas, creamos las matrices de estado de cada uno:
 
         //Matriz del AFD1
+        afd1.cargarMatriz(0, 'a', 1); //Estado 0 + a --> Estado 1
         afd1.cargarMatriz(0, 'c', 2); //Estado 0 + c --> Estado 2
         afd1.cargarMatriz(1, 'a', 1); //Estado 1 + a --> Estado 1
         afd1.cargarMatriz(1, 'b', 3); //Estado 1 + b --> Estado 3

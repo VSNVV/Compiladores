@@ -48,11 +48,11 @@ public class Main {
                 }
                 else if(Integer.parseInt(operacion) == 3){
                     //Se verifica que se desea salir del programa
-                    corriendo = false;
+                    corriendo = false; //Ponemos el booleano en false para que termine el while, y por tanto, el programa
                 }
             }catch(Exception e){
                 System.out.println("Eleccion erronea, volviendo a empezar...");
-                //e.printStackTrace();
+                e.printStackTrace();
             }
         }
         System.out.println("Saliendo...");
