@@ -2,28 +2,22 @@ lexer grammar gSqlMiniLexer;
 
 //Aquí pondremos los simbolos terminales que tiene nuestro SqlMini
 
-SELECT: 'SELECT' -> pushMode(CONSULTA_SELECT_MODE);
-EXPRESION: [a-zA-Z]+;
+SELECT: 'SELECT';
 FROM: 'FROM';
 WHERE: 'WHERE';
-ORDERBY: 'ORDER BY';
+ORDER: 'ORDER';
+BY: 'BY';
 ASC: 'ASC';
 DESC: 'DESC';
+MAYORQUE: '>';
+MAYORIGUALQUE: '>=';
+IGUALQUE: '=';
+ABREPARENTESIS: '(';
+CIERRAPARENTESIS: ')';
+NUMERO: [0-9]+ ('.' [0-9]+)?; //Ahora tambien evaluamos los numeros decimales
+STRING: '\'' ~'\''* '\'';
+COMA: ',';
 AND: 'AND';
 OR: 'OR';
-OPERADOR: '>'|'<'|'>='|'<='|'=';
-CARACTER: .+?;
-SEPARADOR: ',';
-ESPACIO: ' ' -> skip;
-APERTURAEXPRESION: '(';
-CIERREEXPRESION: ')';
-
-INTRO: '\r\n'; //En windows se indican asi los saltos de linea
-
-//MODOS
-
-mode CONSULTA_SELECT_MODE;
-
-mode CONSULTA_FROM_MODE;
-
-mode CONSULTA_WHERE_MODE;
+ID: [a-zA-Z]+; // Identificadores (en este caso, nombres de columnas o tablas)
+WS: [ \t\r\n]+ -> skip; // Ignorar espacios en blanco
