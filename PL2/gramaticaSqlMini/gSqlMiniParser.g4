@@ -13,10 +13,14 @@ Aclaración sobre los operadores:
 
 fichero: ((consulta) | (INTRO))*;
 
-consulta: SELECT+ atributo*;
+consulta: SELECT+ expresion*;
 
-consultaFrom: FROM;
+consultaFrom: FROM tabla;
 
-expresion: (atributo) | (atributo SEPARADOR atributo);
+consultaWhere: WHERE;
 
-atributo: CARACTER+;
+expresion: (EXPRESION) | (EXPRESION SEPARADOR EXPRESION);
+
+tabla: EXPRESION;
+
+texto: CARACTER+;
