@@ -11,16 +11,15 @@ Aclaración sobre los operadores:
 + --> Tiene que haber uno o muchos
  */
 
-fichero: ((consulta) | (INTRO))*;
-
-consulta: SELECT+ expresion*;
-
-consultaFrom: FROM tabla;
-
-consultaWhere: WHERE;
-
-expresion: (EXPRESION) | (EXPRESION SEPARADOR EXPRESION);
-
-tabla: EXPRESION;
-
-texto: CARACTER+;
+consultaSelect : SELECT columnas FROM nombreTabla sentenciaWhere? sentenciaOrderBy?;
+columnas: nombreColumna (COMA nombreColumna)*;
+nombreColumna: ID;
+nombreTabla: ID;
+sentenciaWhere: WHERE expresion;
+sentenciaOrderBy: ORDER BY nombreColumna metodoOrdenacion;
+metodoOrdenacion: ASC | DESC;
+expresion: ABREPARENTESIS expresion CIERRAPARENTESIS
+         | expresion AND expresion
+         | expresion OR expresion
+         | nombreColumna IGUALQUE (NUMERO | STRING)
+         | nombreColumna (MAYORQUE | MAYORIGUALQUE) NUMERO;
