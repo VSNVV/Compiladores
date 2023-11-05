@@ -20,11 +20,11 @@ saltoInstruccion: INTRO;
 
 asignacion: ASINGACION IDENTIFICADOR IGUALQUE instruccion;
 
-condicional: IF ABREPARENTESIS expresion CIERRAPARENTESIS then else;
+condicional: IF ABREPARENTESIS expresion CIERRAPARENTESIS sentenciaThen sentenciaElse;
 
-then: THEN ABREPARENTESIS? instruccion CIERRAPARENTESIS? (operador ABREPARENTESIS instruccion CIERRAPARENTESIS)*;
+sentenciaThen: THEN ABREPARENTESIS? instruccion CIERRAPARENTESIS? (operador ABREPARENTESIS instruccion CIERRAPARENTESIS)*;
 
-else: ELSE ABREPARENTESIS? instruccion CIERRAPARENTESIS?;
+sentenciaElse: ELSE ABREPARENTESIS? instruccion CIERRAPARENTESIS?;
 
 declaracionFuncion: FUNCION IDENTIFICADOR ABREPARENTESIS parametros? CIERRAPARENTESIS FLECHA instruccion;
 
