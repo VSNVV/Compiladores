@@ -5,31 +5,36 @@ options{
     language = Java;
 }
 
-programa: instruccion (saltoInstruccion+ instruccion)* saltoInstruccion*;
+programa: (instruccion PUNTOYCOMA saltoInstruccion?)*;
 
 instruccion: asignacion
             | condicional
             | declaracionFuncion
             | llamadaFuncion
             | show
-            | INTRO
-            | expresion;
+            | match
+            | expresion
+            | operando;
 
 saltoInstruccion: INTRO;
 
-asignacion: ASINGACION IDENTIFICADOR IGUALQUE instruccion PUNTOYCOMA;
+asignacion: ASINGACION IDENTIFICADOR IGUALQUE instruccion;
 
-condicional: IF ABREPARENTESIS instruccion MAYORQUE instruccion CIERRAPARENTESIS THEN asignacion ELSE asignacion;
+condicional: IF ABREPARENTESIS expresion CIERRAPARENTESIS THEN ABREPARENTESIS expresion CIERRAPARENTESIS (operador ABREPARENTESIS expresion CIERRAPARENTESIS)* ELSE ABREPARENTESIS? expresion CIERRAPARENTESIS?;
 
-declaracionFuncion: FUNCION IDENTIFICADOR ABREPARENTESIS parametros? CIERRAPARENTESIS RETORNO expresion PUNTOYCOMA;
+declaracionFuncion: FUNCION IDENTIFICADOR ABREPARENTESIS parametros? CIERRAPARENTESIS FLECHA instruccion;
 
 llamadaFuncion: IDENTIFICADOR ABREPARENTESIS parametros? CIERRAPARENTESIS;
 
-parametros: IDENTIFICADOR (COMA IDENTIFICADOR)*
-            | ENTERO (COMA ENTERO)*;
+match: MATCH expresion WITH (INTRO? OR (operando | DEFAULT) | FLECHA expresion)+;
 
-show: SHOW ABREPARENTESIS instruccion CIERRAPARENTESIS PUNTOYCOMA;
+parametros: (operando (COMA operando)*
+            | expresion);
 
-expresion: operando (SUMA operando)*;
+show: SHOW ABREPARENTESIS instruccion CIERRAPARENTESIS;
+
+expresion: (operando | llamadaFuncion) (operador (operando | llamadaFuncion))*;
+
+operador: SUMA | RESTA | MULTIPLICACION | DIVISION | MAYORQUE | MENORIGUALQUE;
 
 operando: IDENTIFICADOR | ENTERO;
