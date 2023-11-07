@@ -5,6 +5,8 @@ options{
     language = Java;
 }
 
+programa: (consultaSelect)*;
+
 consultaSelect : SELECT columnas FROM nombreTabla sentenciaWhere? sentenciaOrderBy?;
 
 columnas: nombreColumna (COMA nombreColumna)*;
