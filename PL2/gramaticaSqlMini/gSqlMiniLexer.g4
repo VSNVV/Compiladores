@@ -19,5 +19,5 @@ STRING: '\'' ~'\''* '\'';
 COMA: ',';
 AND: 'AND';
 OR: 'OR';
-ID: [a-zA-Z]+; // Identificadores (en este caso, nombres de columnas o tablas)
+ID: ([a-zA-Z]+) | '*'; // Identificadores (en este caso, nombres de columnas o tablas)
 WS: [ \t\r\n]+ -> skip; // Ignorar espacios en blanco
