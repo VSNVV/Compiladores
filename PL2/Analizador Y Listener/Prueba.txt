@@ -1,0 +1,3 @@
+let x = 4 + 1;
+
+fun restar(x) -> 5 - x;
