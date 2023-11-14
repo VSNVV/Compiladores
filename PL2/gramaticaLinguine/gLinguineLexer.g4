@@ -10,6 +10,7 @@ MATCH: 'match';
 WITH: 'with';
 DEFAULT: '?';
 FLECHA: '->';
+COMILLAS: '"';
 OR: '|';
 IDENTIFICADOR: [a-zA-Z]+;
 IGUALQUE: '=';
@@ -24,5 +25,5 @@ CIERRAPARENTESIS: ')';
 ENTERO: [0-9]+;
 COMA: ',';
 PUNTOYCOMA: ';';
-INTRO: '\r\n';
-ESPACIO: [ \t\r\n]+ -> skip; //Ignoramos los espacios en blanco
+INTRO: '\r\n' -> skip;
+ESPACIO: [ \t\r\n]+ -> skip;
