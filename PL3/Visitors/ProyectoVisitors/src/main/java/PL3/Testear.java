@@ -1,10 +1,12 @@
+package PL3;
+
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.*;
 
+// Este fichero va a ser el ejecutable
 public class Testear{
     public static void main (String[] args) throws Exception{
         String inputFile = null;
@@ -17,6 +19,17 @@ public class Testear{
         }
 
         ANTLRInputStream input = new ANTLRInputStream(is);
-        
+        gLinguineLexer lexer = new gLinguineLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        gLinguineParser parser = new gLinguineParser(tokens);
+        parser.setBuildParseTree(true);
+        ParseTree tree = parser.programa();
+
+        //Mostramos el arbol
+        System.out.println(tree.toStringTree(parser));
+
+        MiVisitor nv = new MiVisitor();
+        nv.visit(tree);
+
     }
 }
