@@ -35,4 +35,3 @@ public class TablaSimbolos {
         return this.tabla;
     }
 }
-
