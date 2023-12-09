@@ -11,5 +11,12 @@
         <maven.compiler.target>17</maven.compiler.target>
         <exec.mainClass>com.mycompany.proyectovisitors.ProyectoVisitors</exec.mainClass>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>4.13.1</version>
+        </dependency>
+    </dependencies>
 
 </project>
