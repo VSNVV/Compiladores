@@ -17,75 +17,11 @@ public interface LinguineParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrograma(LinguineParser.ProgramaContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Asig}
-	 * labeled alternative in {@link LinguineParser#instruccion}.
+	 * Visit a parse tree produced by {@link LinguineParser#instruccion}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAsig(LinguineParser.AsigContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Cond}
-	 * labeled alternative in {@link LinguineParser#instruccion}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCond(LinguineParser.CondContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code DecFuncion}
-	 * labeled alternative in {@link LinguineParser#instruccion}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDecFuncion(LinguineParser.DecFuncionContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code LlamFuncion}
-	 * labeled alternative in {@link LinguineParser#instruccion}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLlamFuncion(LinguineParser.LlamFuncionContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Print}
-	 * labeled alternative in {@link LinguineParser#instruccion}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPrint(LinguineParser.PrintContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Switch}
-	 * labeled alternative in {@link LinguineParser#instruccion}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSwitch(LinguineParser.SwitchContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code While}
-	 * labeled alternative in {@link LinguineParser#instruccion}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWhile(LinguineParser.WhileContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code For}
-	 * labeled alternative in {@link LinguineParser#instruccion}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFor(LinguineParser.ForContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Expr}
-	 * labeled alternative in {@link LinguineParser#instruccion}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExpr(LinguineParser.ExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Oper}
-	 * labeled alternative in {@link LinguineParser#instruccion}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOper(LinguineParser.OperContext ctx);
+	T visitInstruccion(LinguineParser.InstruccionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LinguineParser#saltoInstruccion}.
 	 * @param ctx the parse tree
@@ -159,12 +95,6 @@ public interface LinguineParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParametros(LinguineParser.ParametrosContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LinguineParser#string}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitString(LinguineParser.StringContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link LinguineParser#show}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -176,6 +106,62 @@ public interface LinguineParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitExpresion(LinguineParser.ExpresionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code MayorQue}
+	 * labeled alternative in {@link LinguineParser#booleano}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMayorQue(LinguineParser.MayorQueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code MayorIgualQue}
+	 * labeled alternative in {@link LinguineParser#booleano}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMayorIgualQue(LinguineParser.MayorIgualQueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code MenorIgualQue}
+	 * labeled alternative in {@link LinguineParser#booleano}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMenorIgualQue(LinguineParser.MenorIgualQueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code MenorQue}
+	 * labeled alternative in {@link LinguineParser#booleano}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMenorQue(LinguineParser.MenorQueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IgualQue}
+	 * labeled alternative in {@link LinguineParser#booleano}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIgualQue(LinguineParser.IgualQueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IgualQueString}
+	 * labeled alternative in {@link LinguineParser#booleano}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIgualQueString(LinguineParser.IgualQueStringContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code True}
+	 * labeled alternative in {@link LinguineParser#booleano}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTrue(LinguineParser.TrueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code False}
+	 * labeled alternative in {@link LinguineParser#booleano}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFalse(LinguineParser.FalseContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LinguineParser#operador}.
 	 * @param ctx the parse tree

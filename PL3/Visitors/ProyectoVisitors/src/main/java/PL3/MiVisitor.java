@@ -1,30 +1,111 @@
 package PL3;
 
+import javax.swing.text.TabableView;
+
 //Visitor específico para calcular las cosas
 public class MiVisitor extends LinguineParserBaseVisitor<String>{
+    //Atributos de la clase MiVisitor
+    private final TablaSimbolos tablaSimbolos;
 
+    public MiVisitor(TablaSimbolos tablaSimbolos){
+        this.tablaSimbolos = tablaSimbolos;
+    }
     @Override
     public String visitPrograma(LinguineParser.ProgramaContext ctx) {
-        return visit(ctx.instruccion(0));
+        return visitInstruccion(ctx.instruccion(0));
     }
 
-    @Override
-    public String visitAsig(LinguineParser.AsigContext ctx) {
-        return super.visit(ctx.asignacion());
+    public String visitInstruccion(LinguineParser.InstruccionContext ctx){
+        return visitAsignacion(ctx.asignacion());
     }
 
     @Override
     public String visitAsignacion(LinguineParser.AsignacionContext ctx) {
-        return visit(ctx.expresion());
+        String variable = ctx.IDENTIFICADOR().getText();
+        String valor = null;
+        String codigoJazmin = null;
+        //En primer lugar, tenemos que comprobar que hay una variable definida donde almacenar el resultado
+        if (!(variable == null) && (ctx.IGUAL().getText() != null)){
+            //Verificamos que hay una variable definida, por tanto, podemos seguir
+            //Ahora tenemos que ver el valor que tendremos que almacenar en la tabla de símbolos:
+            if(!(ctx.expresion() == null)){
+                //Se confirma que hay una expresión cuyo valor se nos tiene que retornar aquí, por tanto:
+                return visitExpresion(ctx.expresion());
+
+
+            }
+            else if(!ctx.llamadaFuncion().isEmpty()){
+                //Se confirma que hay una llamada a una función, por tanto, visitaremos la llamada para ver el resultado
+                visitLlamadaFuncion(ctx.llamadaFuncion());
+            }
+            else if(!(ctx.ENTERO() == null)){
+                //Se confirma hay un entero, por tanto, podemos ir a ese entero
+                valor = ctx.ENTERO().getText();
+            }
+            else if(!(ctx.STRING().getText() == null)){
+                //Se confirma que hay un string, por tanto, devolveremos el valor del string aqui
+                valor = ctx.STRING().getText();
+            }
+            else{
+                //Se confirma que no hay nada detrás del igual, por tanto, avisaremos del error
+                System.out.println("[ERROR] --> No hay nada detras del igual");
+            }
+            //Ahora, tenemos que ver si el valor que tenemos se puede parsear a entero:
+            int valorParseado;
+            try{
+                int test = Integer.parseInt(String.valueOf(valor));
+                //Si ha ido bien, podremos guardar el valor parseado
+            }catch(Exception e){
+                //Verificamos que el valor no se puede parsear, por tanto no guardaremos el resultado en valorParseado
+            }
+        }
+        else{
+            System.out.println("[ERROR] --> No hay ningun identificador de variable definido o no esta el =");
+        }
+        return "hola";
     }
 
     @Override
     public String visitExpresion(LinguineParser.ExpresionContext ctx) {
-        return visit(ctx.operando(0));
+        //Tenemos que comprobar que operacion tenemos que ver:
+        String operador1 = ctx.ENTERO(0).getText();
+        if(operador1 == null){
+            operador1 = ctx.STRING().getText();
+        }
+        String operador2 = ctx.ENTERO(1).getText();
+        String resultado = "";
+        //Ahora, según el operador haremos una cosa u otra:
+        if(!(ctx.DIVISION() == null)){
+            //Se verifica que es una division, por tanto, el codigo jazmin generado sera el siguiente:
+            resultado = "   ldc " + operador1 + "\t;\n" +
+                    "   ldc " + operador2 + "\t;\n" +
+                    "   idiv\t\t;\n" +
+                    "   istore0\t;";
+        }
+        else if(!(ctx.MULTIPLICACION() == null)){
+            resultado = "   ldc " + operador1 + "\t;\n" +
+                    "   ldc " + operador2 + "\t;\n" +
+                    "   imul\t\t;\n" +
+                    "   istore0\t;";
+        }
+        else if(!(ctx.SUMA() == null)){
+            resultado = "   ldc " + operador1 + "\t;\n" +
+                    "   ldc " + operador2 + "\t;\n" +
+                    "   iadd\t\t;\n" +
+                    "   istore0\t;";
+        }
+        else if(!(ctx.RESTA() == null)){
+            resultado = "   ldc " + operador1 + "\t;\n" +
+                    "   ldc " + operador2 + "\t;\n" +
+                    "   isub\t\t;\n" +
+                    "   istore0\t;";
+        }
+
+        return resultado;
     }
 
-    @Override
-    public String visitOperando(LinguineParser.OperandoContext ctx) {
-        return ctx.IDENTIFICADOR().toString();
+    //Método get de la tabla de simbolos
+    public TablaSimbolos getTablaSimbolos() {
+        return tablaSimbolos;
     }
 }

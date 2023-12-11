@@ -7,21 +7,20 @@ options{
 
 programa: (instruccion PUNTOYCOMA)*;
 
-instruccion: asignacion                 # Asig
-            | condicional               # Cond
-            | declaracionFuncion        # DecFuncion
-            | llamadaFuncion            # LlamFuncion
-            | show                      # Print
-            | match                     # Switch
-            | sentenciaWhile            # While
-            | sentenciaFor              # For
-            | expresion                 # Expr
-            | operando                  # Oper
+instruccion: asignacion
+            | condicional
+            | declaracionFuncion
+            | llamadaFuncion
+            | show
+            | match
+            | sentenciaWhile
+            | sentenciaFor
+            | STRING
             ;
 
 saltoInstruccion: INTRO;
 
-asignacion: ASINGACION IDENTIFICADOR IGUAL (expresion | llamadaFuncion);
+asignacion: ASINGACION IDENTIFICADOR IGUAL (expresion | llamadaFuncion | ENTERO | STRING);
 
 condicional: IF ABREPARENTESIS expresion CIERRAPARENTESIS sentenciaThen sentenciaElseIf? sentenciaElse?;
 
@@ -44,25 +43,27 @@ sentenciaFor: FOR ABREPARENTESIS CIERRAPARENTESIS;
 parametros: (operando (COMA operando)*
             | expresion);
 
-string: COMILLAS IDENTIFICADOR COMILLAS;
 
 show: SHOW ABREPARENTESIS instruccion CIERRAPARENTESIS;
 
-expresion: ENTERO DIVISION ENTERO           #DivisionEnteros
-         | ENTERO MULTIPLICACION ENTERO     #MultEnteros
-         | ENTERO SUMA ENTERO               #SumEnteros
-         | ENTERO RESTA ENTERO              #RestaEnteros
-         | string MULTIPLICACION ENTERO     #MultString
-         | string SUMA ENTERO               #ConcatString
+expresion: ENTERO DIVISION ENTERO
+         | ENTERO MULTIPLICACION ENTERO
+         | STRING MULTIPLICACION ENTERO
+         | ENTERO SUMA ENTERO
+         | ENTERO RESTA ENTERO
+         | STRING SUMA ENTERO
          ;
 
-booleano: ENTERO MAYORQUE ENTERO
-        | ENTERO MENORIGUALQUE ENTERO
-        | ENTERO MENORQUE ENTERO
-        | ENTERO IGUALQUE ENTERO
-        | string IGUALQUE string
+booleano: ENTERO MAYORQUE ENTERO            # MayorQue
+        | ENTERO MAYORIGUALQUE ENTERO       # MayorIgualQue
+        | ENTERO MENORIGUALQUE ENTERO       # MenorIgualQue
+        | ENTERO MENORQUE ENTERO            # MenorQue
+        | ENTERO IGUALQUE ENTERO            # IgualQue
+        | STRING IGUALQUE STRING            # IgualQueString
+        | TRUE                              # True
+        | FALSE                             # False
         ;
 
 operador: SUMA | RESTA | MULTIPLICACION | DIVISION | MAYORQUE | MENORIGUALQUE;
 
-operando: string | ENTERO;
+operando: STRING | ENTERO;
