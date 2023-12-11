@@ -21,9 +21,9 @@ instruccion: asignacion                 # Asig
 
 saltoInstruccion: INTRO;
 
-asignacion: ASINGACION IDENTIFICADOR IGUALQUE (expresion | condicional | match | llamadaFuncion);
+asignacion: ASINGACION IDENTIFICADOR IGUAL (expresion | llamadaFuncion);
 
-condicional: IF ABREPARENTESIS expresion CIERRAPARENTESIS sentenciaThen sentenciaElseIf sentenciaElse?;
+condicional: IF ABREPARENTESIS expresion CIERRAPARENTESIS sentenciaThen sentenciaElseIf? sentenciaElse?;
 
 sentenciaElseIf: ELSE IF ABREPARENTESIS expresion CIERRAPARENTESIS sentenciaThen;
 
@@ -48,8 +48,21 @@ string: COMILLAS IDENTIFICADOR COMILLAS;
 
 show: SHOW ABREPARENTESIS instruccion CIERRAPARENTESIS;
 
-expresion: (operando | llamadaFuncion | string) (operador (operando | llamadaFuncion))*;
+expresion: ENTERO DIVISION ENTERO           #DivisionEnteros
+         | ENTERO MULTIPLICACION ENTERO     #MultEnteros
+         | ENTERO SUMA ENTERO               #SumEnteros
+         | ENTERO RESTA ENTERO              #RestaEnteros
+         | string MULTIPLICACION ENTERO     #MultString
+         | string SUMA ENTERO               #ConcatString
+         ;
+
+booleano: ENTERO MAYORQUE ENTERO
+        | ENTERO MENORIGUALQUE ENTERO
+        | ENTERO MENORQUE ENTERO
+        | ENTERO IGUALQUE ENTERO
+        | string IGUALQUE string
+        ;
 
 operador: SUMA | RESTA | MULTIPLICACION | DIVISION | MAYORQUE | MENORIGUALQUE;
 
-operando: IDENTIFICADOR | ENTERO;
+operando: string | ENTERO;

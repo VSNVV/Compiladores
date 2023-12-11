@@ -15,7 +15,7 @@ public class Testear{
 //        if (inputFile != null) {
 //            is = new FileInputStream(inputFile);
 //        }
-        CharStream input = CharStreams.fromString("if not(2<3 || 3<2) then 34 else 53;");
+        CharStream input = CharStreams.fromString("let x = 5;");
         LinguineLexer lexer = new LinguineLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         LinguineParser parser = new LinguineParser(tokens);
