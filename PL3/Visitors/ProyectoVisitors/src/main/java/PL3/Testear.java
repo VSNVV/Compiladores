@@ -15,7 +15,7 @@ public class Testear{
 //        if (inputFile != null) {
 //            is = new FileInputStream(inputFile);
 //        }
-        CharStream input = CharStreams.fromString("let x = 5 + 4;");
+        CharStream input = CharStreams.fromString("let x = 'hola' + 4;");
         LinguineLexer lexer = new LinguineLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         LinguineParser parser = new LinguineParser(tokens);

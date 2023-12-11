@@ -68,19 +68,29 @@ public class MiVisitor extends LinguineParserBaseVisitor<String>{
     @Override
     public String visitExpresion(LinguineParser.ExpresionContext ctx) {
         //Tenemos que comprobar que operacion tenemos que ver:
-        String operador1 = ctx.ENTERO(0).getText();
-        if(operador1 == null){
+        String operador1;
+        String operador2;
+        int numEnteros = ctx.ENTERO().size();
+        if(numEnteros == 1){
+            //Verificamos que solo hay un numero:
             operador1 = ctx.STRING().getText();
+            operador2 = ctx.ENTERO(0).getText();
         }
-        String operador2 = ctx.ENTERO(1).getText();
+        else{
+            //Verificamos que ambos son enteros
+            operador1 = ctx.ENTERO(0).getText();
+            operador2 = ctx.ENTERO(1).getText();
+        }
+
         String resultado = "";
         //Ahora, según el operador haremos una cosa u otra:
-        if(!(ctx.DIVISION() == null)){
-            //Se verifica que es una division, por tanto, el codigo jazmin generado sera el siguiente:
-            resultado = "   ldc " + operador1 + "\t;\n" +
+        if((!(ctx.DIVISION() == null)) && (ctx.STRING().getText() != null)){
+            //Se trata de que es una division entre enteros
+            resultado = "   ldc " + "\" " + operador1 + "\" \t;\n" +
                     "   ldc " + operador2 + "\t;\n" +
-                    "   idiv\t\t;\n" +
-                    "   istore0\t;";
+                    "   invokevirtual java/lang/String/valueOf(I)Ljava/lang/String;" +
+                    "   invokevirtual java/lang/String/concat(Ljava/lang/String;)Ljava/lang/String;" +
+                    "   astore_0\t;";
         }
         else if(!(ctx.MULTIPLICACION() == null)){
             resultado = "   ldc " + operador1 + "\t;\n" +
@@ -88,7 +98,16 @@ public class MiVisitor extends LinguineParserBaseVisitor<String>{
                     "   imul\t\t;\n" +
                     "   istore0\t;";
         }
-        else if(!(ctx.SUMA() == null)){
+        else if((!(ctx.SUMA() == null)) && (ctx.STRING().getText() != null)){
+            //Se trata de una concatenacion
+            resultado = "   ldc " + "\" " + operador1 + "\" \t;\n" +
+                    "   ldc " + operador2 + "\t;\n" +
+                    "   invokevirtual java/lang/String/valueOf(I)Ljava/lang/String;" +
+                    "   invokevirtual java/lang/String/concat(Ljava/lang/String;)Ljava/lang/String;" +
+                    "   astore_0\t;";
+        }
+        else if((!(ctx.SUMA() == null)) && (ctx.STRING().getText() == null)){
+            //Se trata de una suma normal entre enteros:
             resultado = "   ldc " + operador1 + "\t;\n" +
                     "   ldc " + operador2 + "\t;\n" +
                     "   iadd\t\t;\n" +
