@@ -5,17 +5,16 @@ options{
     language = Java;
 }
 
-programa: (instruccion PUNTOYCOMA)*;
+programa: (instruccion)*;
 
-instruccion: asignacion
+instruccion: (asignacion
             | condicional
             | declaracionFuncion
             | llamadaFuncion
             | show
             | match
             | sentenciaWhile
-            | sentenciaFor
-            | STRING
+            | sentenciaFor) PUNTOYCOMA
             ;
 
 saltoInstruccion: INTRO;

@@ -12,7 +12,7 @@ FOR: 'for';
 WHILE: 'while';
 DEFAULT: '?';
 FLECHA: '->';
-STRING: '\'' .*? '\'';
+STRING: '"' [a-zA-Z]+  '"';
 OR: '|';
 IDENTIFICADOR: [a-zA-Z]+;
 IGUAL: '=';
