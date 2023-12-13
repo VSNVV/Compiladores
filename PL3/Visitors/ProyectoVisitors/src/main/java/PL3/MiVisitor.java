@@ -111,7 +111,6 @@ public class MiVisitor extends LinguineParserBaseVisitor<String>{
             operador2 = ctx.ENTERO(1).getText();
         }
 
-        String resultado = "";
         //Ahora, según el operador haremos una cosa u otra:
         if((!(ctx.DIVISION() == null))){
             //Se trata de que es una division entre enteros
@@ -130,7 +129,7 @@ public class MiVisitor extends LinguineParserBaseVisitor<String>{
         }
         else if((!(ctx.SUMA() == null)) && (ctx.STRING() != null)){
             //Se trata de una concatenacion
-            resultado = "   ldc " + "\" " + operador1 + "\" \t;\n" +
+            resultado = "   ldc " + operador1 + "\t;\n" +
                     "   ldc " + operador2 + "\t;\n" +
                     "   invokevirtual java/lang/String/valueOf(I)Ljava/lang/String;" +
                     "   invokevirtual java/lang/String/concat(Ljava/lang/String;)Ljava/lang/String;" +
