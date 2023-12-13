@@ -5,7 +5,7 @@ options{
     language = Java;
 }
 
-programa: (instruccion)*;
+programa: (instruccion PUNTOYCOMA)*;
 
 instruccion: (asignacion
             | condicional
@@ -14,14 +14,14 @@ instruccion: (asignacion
             | show
             | match
             | sentenciaWhile
-            | sentenciaFor) PUNTOYCOMA
+            | sentenciaFor)
             ;
 
 saltoInstruccion: INTRO;
 
 asignacion: ASINGACION IDENTIFICADOR IGUAL (expresion | llamadaFuncion | ENTERO | STRING);
 
-condicional: IF ABREPARENTESIS expresion CIERRAPARENTESIS sentenciaThen sentenciaElseIf? sentenciaElse?;
+condicional: IF ABREPARENTESIS booleano CIERRAPARENTESIS sentenciaThen sentenciaElseIf? sentenciaElse;
 
 sentenciaElseIf: ELSE IF ABREPARENTESIS expresion CIERRAPARENTESIS sentenciaThen;
 
@@ -53,14 +53,14 @@ expresion: ENTERO DIVISION ENTERO
          | STRING SUMA ENTERO
          ;
 
-booleano: ENTERO MAYORQUE ENTERO            # MayorQue
-        | ENTERO MAYORIGUALQUE ENTERO       # MayorIgualQue
-        | ENTERO MENORIGUALQUE ENTERO       # MenorIgualQue
-        | ENTERO MENORQUE ENTERO            # MenorQue
-        | ENTERO IGUALQUE ENTERO            # IgualQue
-        | STRING IGUALQUE STRING            # IgualQueString
-        | TRUE                              # True
-        | FALSE                             # False
+booleano: IDENTIFICADOR MAYORQUE ENTERO
+        | IDENTIFICADOR MAYORIGUALQUE ENTERO
+        | IDENTIFICADOR MENORIGUALQUE ENTERO
+        | IDENTIFICADOR MENORQUE ENTERO
+        | IDENTIFICADOR IGUALQUE ENTERO
+        | IDENTIFICADOR IGUALQUE STRING
+        | TRUE
+        | FALSE
         ;
 
 operador: SUMA | RESTA | MULTIPLICACION | DIVISION | MAYORQUE | MENORIGUALQUE;

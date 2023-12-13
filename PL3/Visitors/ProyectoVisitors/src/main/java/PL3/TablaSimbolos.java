@@ -30,6 +30,11 @@ public class TablaSimbolos {
         getTabla().put(simbolo, nuevoValor);
     }
 
+    //Método que devuelve el numero total de símbolos pero en string
+    public String numTotalSimbolos(){
+        return String.valueOf(getTabla().size());
+    }
+
     //Método Get
     public HashMap<String, String> getTabla() {
         return this.tabla;

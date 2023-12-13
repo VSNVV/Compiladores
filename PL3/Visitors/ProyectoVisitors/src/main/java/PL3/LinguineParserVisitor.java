@@ -107,61 +107,11 @@ public interface LinguineParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExpresion(LinguineParser.ExpresionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code MayorQue}
-	 * labeled alternative in {@link LinguineParser#booleano}.
+	 * Visit a parse tree produced by {@link LinguineParser#booleano}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMayorQue(LinguineParser.MayorQueContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code MayorIgualQue}
-	 * labeled alternative in {@link LinguineParser#booleano}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMayorIgualQue(LinguineParser.MayorIgualQueContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code MenorIgualQue}
-	 * labeled alternative in {@link LinguineParser#booleano}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMenorIgualQue(LinguineParser.MenorIgualQueContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code MenorQue}
-	 * labeled alternative in {@link LinguineParser#booleano}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMenorQue(LinguineParser.MenorQueContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code IgualQue}
-	 * labeled alternative in {@link LinguineParser#booleano}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIgualQue(LinguineParser.IgualQueContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code IgualQueString}
-	 * labeled alternative in {@link LinguineParser#booleano}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIgualQueString(LinguineParser.IgualQueStringContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code True}
-	 * labeled alternative in {@link LinguineParser#booleano}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTrue(LinguineParser.TrueContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code False}
-	 * labeled alternative in {@link LinguineParser#booleano}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFalse(LinguineParser.FalseContext ctx);
+	T visitBooleano(LinguineParser.BooleanoContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LinguineParser#operador}.
 	 * @param ctx the parse tree

@@ -25,18 +25,24 @@ public class Testear{
         TablaSimbolos tb = new TablaSimbolos();
         MiVisitor nv = new MiVisitor(tb);
         String resultado = nv.visitPrograma(tree);
-        System.out.println("El código jazmin generado es el siguiente:\n\n");
+        //Si no hay error, se muestra el código Jasmin
+        if(!nv.getHayError()){
+            System.out.println("El código jazmin generado es el siguiente:\n\n");
 
 
-        System.out.println(".class public Codigo" + "\n"
-                + ".super java/lang/Object" + "\n" + "\n"
-                + ".method public static main([Ljava/lang/String;)V" + "\n"
-                + "   .limit stack 100" + "\n"
-                + "   .limit locals 100" + "\n" + "\n"
+            System.out.println(".class public Codigo" + "\n"
+                    + ".super java/lang/Object" + "\n" + "\n"
+                    + ".method public static main([Ljava/lang/String;)V" + "\n"
+                    + "   .limit stack 100" + "\n"
+                    + "   .limit locals 100" + "\n" + "\n"
 
-                + resultado + "\n\n"
-                + "  return" + "\n"
-                + ".end method" + "\n"
-        );
+                    + resultado
+                    + "  return" + "\n"
+                    + ".end method" + "\n"
+            );
+        }
+        else{
+            System.out.println("El codigo Jamsin no se ha generado porque ha habido un error de compilacion");
+        }
     }
 }
