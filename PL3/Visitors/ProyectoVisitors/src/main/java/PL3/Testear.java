@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 // Este fichero va a ser el ejecutable
 public class Testear{
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         String inputFile = null;
         if (args.length > 0) inputFile = args[0];
 //        InputStream is = System.in;

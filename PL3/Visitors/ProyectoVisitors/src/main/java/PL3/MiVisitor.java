@@ -21,7 +21,7 @@ public class MiVisitor extends LinguineParserBaseVisitor<String>{
             if(ctx.PUNTOYCOMA(i) == null){
                 //Se verifica que falta un punto y coma, por tanto no se puede seguir
                 System.out.println("[ERROR] --> Le falta un punto y coma (;) a una instruccion");
-                setHayErrorError(true);
+                setHayError(true);
                 return null;
             }
         }
@@ -45,7 +45,7 @@ public class MiVisitor extends LinguineParserBaseVisitor<String>{
         }
 
 
-        return "";
+        return null;
     }
 
     @Override
@@ -82,16 +82,16 @@ public class MiVisitor extends LinguineParserBaseVisitor<String>{
             else{
                 //Se confirma que no hay nada detrás del igual, por tanto, avisaremos del error
                 System.out.println("[ERROR] --> No hay nada detras del igual");
-                setHayErrorError(true);
+                setHayError(true);
                 return null;
             }
         }
         else{
             System.out.println("[ERROR] --> No hay ningun identificador de variable definido o no esta el =");
-            setHayErrorError(true);
+            setHayError(true);
             return null;
         }
-        return "";
+        return null;
     }
 
     @Override
@@ -114,7 +114,7 @@ public class MiVisitor extends LinguineParserBaseVisitor<String>{
         //Ahora, según el operador haremos una cosa u otra:
         if((!(ctx.DIVISION() == null))){
             //Se trata de que es una division entre enteros
-            resultado = "   ldc " + "\" " + operador1 + "\" \t;\n" +
+            resultado = getResultado() + "   ldc " + "\" " + operador1 + "\" \t;\n" +
                     "   ldc " + operador2 + "\t;\n" +
                     "   invokevirtual java/lang/String/valueOf(I)Ljava/lang/String;" +
                     "   invokevirtual java/lang/String/concat(Ljava/lang/String;)Ljava/lang/String;" +
@@ -122,14 +122,14 @@ public class MiVisitor extends LinguineParserBaseVisitor<String>{
                     "   astore_" + getTablaSimbolos().numTotalSimbolos() + "\t;\n\n";
         }
         else if(!(ctx.MULTIPLICACION() == null)){
-            resultado = "   ldc " + operador1 + "\t;\n" +
+            resultado = getResultado() + "   ldc " + operador1 + "\t;\n" +
                     "   ldc " + operador2 + "\t;\n" +
                     "   imul\t\t;\n" +
                     "   istore_" + getTablaSimbolos().numTotalSimbolos() + "\t;\n\n";
         }
         else if((!(ctx.SUMA() == null)) && (ctx.STRING() != null)){
             //Se trata de una concatenacion
-            resultado = "   ldc " + operador1 + "\t;\n" +
+            resultado = getResultado() + "   ldc " + operador1 + "\t;\n" +
                     "   ldc " + operador2 + "\t;\n" +
                     "   invokevirtual java/lang/String/valueOf(I)Ljava/lang/String;" +
                     "   invokevirtual java/lang/String/concat(Ljava/lang/String;)Ljava/lang/String;" +
@@ -137,13 +137,13 @@ public class MiVisitor extends LinguineParserBaseVisitor<String>{
         }
         else if((!(ctx.SUMA() == null)) && (ctx.STRING() == null)){
             //Se trata de una suma normal entre enteros:
-            resultado = "   ldc " + operador1 + "\t;\n" +
+            resultado = getResultado() + "   ldc " + operador1 + "\t;\n" +
                     "   ldc " + operador2 + "\t;\n" +
                     "   iadd\t\t;\n" +
                     "   istore_" + getTablaSimbolos().numTotalSimbolos() + "\t;\n\n";
         }
         else if(!(ctx.RESTA() == null)){
-            resultado = "   ldc " + operador1 + "\t;\n" +
+            resultado = getResultado() + "   ldc " + operador1 + "\t;\n" +
                     "   ldc " + operador2 + "\t;\n" +
                     "   isub\t\t;\n" +
                     "   istore_" + getTablaSimbolos().numTotalSimbolos() + "\t;\n\n";
@@ -155,7 +155,28 @@ public class MiVisitor extends LinguineParserBaseVisitor<String>{
     @Override
     public String visitCondicional(LinguineParser.CondicionalContext ctx) {
         //TODO VISITOR DE UN CONDICIONAL, LO TENGO QUE HACER PERO CUANDO LLEGUE A CASA
-        return "";
+        //En primer lugar, tenemos que comprobar que la expresión está bien escrita
+        if(ctx.ABREPARENTESIS() == null){
+            //Se verifica que falta un ( en el if
+            System.out.println("[ERROR] --> Falta un ( en el if");
+            setHayError(true);
+            return null;
+        }
+        else if(ctx.booleano() == null){
+            //Se verifica que falta un
+            System.out.println("[ERROR] --> Error en la expresion booleana del if");
+            setHayError(true);
+            return null;
+        }
+        else if(ctx.CIERRAPARENTESIS() == null){
+
+        }
+
+
+
+
+
+        return null;
     }
 
     //Método get de la tabla de simbolos
@@ -167,7 +188,7 @@ public class MiVisitor extends LinguineParserBaseVisitor<String>{
         return this.hayError;
     }
 
-    public void setHayErrorError(boolean hayError){
+    public void setHayError(boolean hayError){
         this.hayError = hayError;
     }
 
