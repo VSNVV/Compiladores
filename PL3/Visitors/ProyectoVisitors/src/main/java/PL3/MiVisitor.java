@@ -1,181 +1,242 @@
 package PL3;
 
-import javax.swing.text.TabableView;
-
 //Visitor específico para calcular las cosas
-public class MiVisitor extends LinguineParserBaseVisitor<String>{
+public class MiVisitor extends LinguineParserBaseVisitor<Object>{
     //Atributos de la clase MiVisitor
     private final TablaSimbolos tablaSimbolos;
-
-    private String resultado = "";
+    private final GeneradorEtiquetas generadorEtiquetas;
 
     private boolean hayError = false;
 
-    public MiVisitor(TablaSimbolos tablaSimbolos){
+    public MiVisitor(TablaSimbolos tablaSimbolos, GeneradorEtiquetas generadorEtiquetas){
         this.tablaSimbolos = tablaSimbolos;
+        this.generadorEtiquetas = generadorEtiquetas;
     }
     @Override
-    public String visitPrograma(LinguineParser.ProgramaContext ctx) {
-        //Antes de nada, tenemos que comprobar que todas las instrucciones tienen un punto y coma
+    public Object visitPrograma(LinguineParser.ProgramaContext ctx) {
+        String codigoJasmin = "";
         for(int i = 0; i < ctx.instruccion().size(); i++){
-            if(ctx.PUNTOYCOMA(i) == null){
-                //Se verifica que falta un punto y coma, por tanto no se puede seguir
-                System.out.println("[ERROR] --> Le falta un punto y coma (;) a una instruccion");
-                setHayError(true);
-                return null;
-            }
+             codigoJasmin = codigoJasmin + visit(ctx.instruccion(i));;
         }
-        //Llegados aqui, verficiamos que estan todos los ;, por tanto podemos visitar las instrucciones
-        for(int i = 0; i < ctx.instruccion().size(); i++){
-            visitInstruccion(ctx.instruccion(i));
-        }
-        //Cuando hayamos visitado todas las instrucciones, devolveremos el codigo Jazmin
-        return getResultado();
+
+        return codigoJasmin;
     }
 
-    public String visitInstruccion(LinguineParser.InstruccionContext ctx){
+    public Object visitInstruccion(LinguineParser.InstruccionContext ctx){
         //Una instruccion puede ser muchas cosas, por tanto tenemos que ver a cual corresponde
-        if(ctx.asignacion() != null){
-            //Se verifica que es una asignacion
-            visitAsignacion(ctx.asignacion());
-        }
-        else if(ctx.condicional() != null){
-            //Se verifica que es una asignacion
-            visitCondicional(ctx.condicional());
-        }
-
-
-        return null;
+        return visitChildren(ctx);
     }
 
+
+
     @Override
-    public String visitAsignacion(LinguineParser.AsignacionContext ctx) {
-        String variable = ctx.IDENTIFICADOR().getText();
-        //En primer lugar, tenemos que comprobar que hay una variable definida donde almacenar el resultado
-        if (!(variable == null) && (ctx.IGUAL().getText() != null)){
-            //Verificamos que hay una variable definida, por tanto, podemos seguir
-            //Ahora tenemos que ver el valor que tendremos que almacenar en la tabla de símbolos:
-            if(!(ctx.expresion() == null)){
-                //Se confirma que hay una expresión cuyo valor se nos tiene que retornar aquí, por tanto:
-                visitExpresion(ctx.expresion());
-                //Una vez redactado el codigo Jasmin, almacenamos el simbolo en la tabla de simbolos
-                getTablaSimbolos().anadirSimbolo(variable, getTablaSimbolos().numTotalSimbolos());
+    public Object visitAsignacion(LinguineParser.AsignacionContext ctx) {
+        //Si se hace una asignación, es para simplemente guardar un símbolo dentro de la tabla de símbolos
+        String nombreVariable = ctx.IDENTIFICADOR().getText();
+        String codigoJasmin = "";
+        //Tenemos que comprobar el valor de la variable y su tipo
+        if(ctx.ENTERO() != null){
+            //La asignacion tiene un entero dentro
+            Object valor = ctx.ENTERO().getText();
+            String tipo = "entero";
+            //Anadimos el simbolo a la tabla de simbolos
+            getTablaSimbolos().anadirSimbolo(nombreVariable, valor, tipo);
+            //Una vez que tenemos ya el simbolo metido en la tabla de simbolos, generamos el codigo Jasmin
+            codigoJasmin = "   ldc " + ctx.ENTERO().getText() + ";\n" +
+                    "   istore_" + getTablaSimbolos().getTabla().get(nombreVariable).getRegistro() + ";\n\n";
+        }
+        else if(ctx.STRING() != null){
+            //La asignacion tiene un string dentro
+            Object valor = ctx.STRING().getText();
+            String tipo = "string";
+            //Anadimos el simbolo a la tabla de simbolos
+            getTablaSimbolos().anadirSimbolo(nombreVariable, valor, tipo);
+            //Una vez que tenemos ya el simbolo metido en la tabla de simbolos, generamos el codigo Jasmin
+            codigoJasmin = "   ldc " + ctx.STRING().getText() + ";\n" +
+                    "   astore_" + getTablaSimbolos().getTabla().get(nombreVariable).getRegistro() + ";\n\n";
+        }
+        else if(ctx.expresion() != null){
+            //Tenemos una expresion dentro
+            if(ctx.expresion().DIVISION() != null && ctx.expresion().STRING() == null){
+                //Division entre numeros enteros
+                Object valor = Integer.parseInt(ctx.expresion().ENTERO(0).getText()) / Integer.parseInt(ctx.expresion().ENTERO(1).getText());
+                String tipo = "entero";
+                //Anadimos a la tabla de simbolos
+                getTablaSimbolos().anadirSimbolo(nombreVariable, valor, tipo);
+                codigoJasmin = "   ldc " + ctx.expresion().ENTERO(0) + ";\n" +
+                        "   ldc " + ctx.expresion().ENTERO(1) + ";\n" +
+                        "   idiv;\n" +
+                        "   istore_" + getTablaSimbolos().getTabla().get(nombreVariable).getRegistro() + ";\n" +
+                        "   getstatic java/lang/System/out Ljava/io/PrintStream;\n" +
+                        "   iload_" + getTablaSimbolos().getTabla().get(nombreVariable).getRegistro() + ";\n" +
+                        "   invokevirtual java/io/PrintStream/println(I)V\n\n";
             }
-            else if(!ctx.llamadaFuncion().isEmpty()){
-                //Se confirma que hay una llamada a una función, por tanto, visitaremos la llamada para ver el resultado
-                visitLlamadaFuncion(ctx.llamadaFuncion());
-            }
-            else if(!(ctx.ENTERO() == null)){
-                //Se confirma hay un entero, por tanto, podemos ir a ese entero
-                resultado = "   ldc " + ctx.ENTERO().getText() + "\t;\n" +
-                        "   istore_" + getTablaSimbolos().numTotalSimbolos() + "\t;\n\n";
-                //Una vez redactado el codigo Jasmin, almacenamos el simbolo en la tabla de simbolos
-                getTablaSimbolos().anadirSimbolo(variable, getTablaSimbolos().numTotalSimbolos());
-            }
-            else if(!(ctx.STRING().getText() == null)){
-                //Se confirma que hay un string
-                resultado = "   ldc " + ctx.ENTERO().getText() + "\t;\n" +
-                        "   astore_" + getTablaSimbolos().numTotalSimbolos() + "\t;\n\n";
-                //Una vez redactado el codigo Jasmin, almacenamos el simbolo en la tabla de simbolos
-                getTablaSimbolos().anadirSimbolo(variable, getTablaSimbolos().numTotalSimbolos());
-            }
-            else{
-                //Se confirma que no hay nada detrás del igual, por tanto, avisaremos del error
-                System.out.println("[ERROR] --> No hay nada detras del igual");
+            else if(ctx.expresion().DIVISION() != null && ctx.expresion().STRING() != null){
+                //Division de un string
+                //TODO POSIBLE MEJORA PARA LA PARTE INTERMEDIA, DIVIDIR CORTANDO EL STRING EN X NUMERO DE CARACTERES
+                System.out.println("[ERROR] --> No se puede dividir un string");
                 setHayError(true);
-                return null;
+            }
+            else if(ctx.expresion().MULTIPLICACION() != null && ctx.expresion().STRING() == null){
+                //Multiplicacion entre numeros enteros
+                Object valor = Integer.parseInt(ctx.expresion().ENTERO(0).getText()) * Integer.parseInt(ctx.expresion().ENTERO(1).getText());
+                String tipo = "entero";
+                //Anadimos a la tabla de simbolos
+                getTablaSimbolos().anadirSimbolo(nombreVariable, valor, tipo);
+                codigoJasmin = "   ldc " + ctx.expresion().ENTERO(0) + ";\n" +
+                        "   ldc " + ctx.expresion().ENTERO(1) + ";\n" +
+                        "   imul;\n" +
+                        "   istore_" + getTablaSimbolos().getTabla().get(nombreVariable).getRegistro() + ";\n" +
+                        "   getstatic java/lang/System/out Ljava/io/PrintStream;\n" +
+                        "   iload_" + getTablaSimbolos().getTabla().get(nombreVariable).getRegistro() + ";\n" +
+                        "   invokevirtual java/io/PrintStream/println(I)V\n\n";
+            }
+            else if(ctx.expresion().MULTIPLICACION() != null && ctx.expresion().STRING() != null){
+                //Multiplicacion de un string TODO posible mejora
+                System.out.println("[ERROR] --> No se puede multiplicar un string");
+                setHayError(true);
+            }
+            else if(ctx.expresion().SUMA() != null && ctx.expresion().STRING() == null){
+                //Suma de dos numeros enteros
+                Object valor = Integer.parseInt(ctx.expresion().ENTERO(0).getText()) + Integer.parseInt(ctx.expresion().ENTERO(1).getText());
+                String tipo = "entero";
+                //Anadimos a la tabla de simbolos
+                getTablaSimbolos().anadirSimbolo(nombreVariable, valor, tipo);
+                codigoJasmin = "   ldc " + ctx.expresion().ENTERO(0) + ";\n" +
+                        "   ldc " + ctx.expresion().ENTERO(1) + ";\n" +
+                        "   iadd;\n" +
+                        "   istore_" + getTablaSimbolos().getTabla().get(nombreVariable).getRegistro() + ";\n" +
+                        "   getstatic java/lang/System/out Ljava/io/PrintStream;\n" +
+                        "   iload_" + getTablaSimbolos().getTabla().get(nombreVariable).getRegistro() + ";\n" +
+                        "   invokevirtual java/io/PrintStream/println(I)V\n\n";
+            }
+            else if(ctx.expresion().SUMA() != null && ctx.expresion().STRING() != null){
+                //Suma de un string (concatenacion) TODO posible mejora para la parte intermedia
+                System.out.println("[ERROR] --> No se puede sumar un string"); // De momento, esta mejora es facil
+                setHayError(true);
+            }
+            else if(ctx.expresion().RESTA() != null && ctx.expresion().STRING() == null){
+                //Resta de dos numeros enteros
+                Object valor = Integer.parseInt(ctx.expresion().ENTERO(0).getText()) - Integer.parseInt(ctx.expresion().ENTERO(1).getText());
+                String tipo = "entero";
+                //Anadimos a la tabla de simbolos
+                getTablaSimbolos().anadirSimbolo(nombreVariable, valor, tipo);
+                codigoJasmin = "   ldc " + ctx.expresion().ENTERO(0) + ";\n" +
+                        "   ldc " + ctx.expresion().ENTERO(1) + ";\n" +
+                        "   isub;\n" +
+                        "   istore_" + getTablaSimbolos().getTabla().get(nombreVariable).getRegistro() + ";\n" +
+                        "   getstatic java/lang/System/out Ljava/io/PrintStream;\n" +
+                        "   iload_" + getTablaSimbolos().getTabla().get(nombreVariable).getRegistro() + ";\n" +
+                        "   invokevirtual java/io/PrintStream/println(I)V\n\n";
+            }
+            else if(ctx.expresion().RESTA() != null && ctx.expresion().STRING() != null){
+                //Resta de un string, lo cual no tiene sentido
+                System.out.println("[ERROR] --> No se puede restar un string");
+                setHayError(true);
             }
         }
-        else{
-            System.out.println("[ERROR] --> No hay ningun identificador de variable definido o no esta el =");
-            setHayError(true);
-            return null;
-        }
-        return null;
+        return codigoJasmin;
     }
 
     @Override
-    public String visitExpresion(LinguineParser.ExpresionContext ctx) {
-        //Tenemos que comprobar que operacion tenemos que ver:
-        String operador1;
-        String operador2;
-        int numEnteros = ctx.ENTERO().size();
-        if(numEnteros == 1){
-            //Verificamos que solo hay un numero:
-            operador1 = ctx.STRING().getText();
-            operador2 = ctx.ENTERO(0).getText();
-        }
-        else{
-            //Verificamos que ambos son enteros
-            operador1 = ctx.ENTERO(0).getText();
-            operador2 = ctx.ENTERO(1).getText();
-        }
+    public Object visitCondicional(LinguineParser.CondicionalContext ctx) {
+        //En primer lugar, tenemos que cargar la variable de la variable
+        //Obtenemos el valor de la variable en la tabla de simbolos
+        String nombreVariable = ctx.booleano().IDENTIFICADOR().getText();
+        String tipo = getTablaSimbolos().getTabla().get(nombreVariable).getTipo();
+        int registro = getTablaSimbolos().getTabla().get(nombreVariable).getRegistro();
+        String codigoJasmin = "";
 
-        //Ahora, según el operador haremos una cosa u otra:
-        if((!(ctx.DIVISION() == null))){
-            //Se trata de que es una division entre enteros
-            resultado = getResultado() + "   ldc " + "\" " + operador1 + "\" \t;\n" +
-                    "   ldc " + operador2 + "\t;\n" +
-                    "   invokevirtual java/lang/String/valueOf(I)Ljava/lang/String;" +
-                    "   invokevirtual java/lang/String/concat(Ljava/lang/String;)Ljava/lang/String;" +
-                    "   idiv\t;" +
-                    "   astore_" + getTablaSimbolos().numTotalSimbolos() + "\t;\n\n";
-        }
-        else if(!(ctx.MULTIPLICACION() == null)){
-            resultado = getResultado() + "   ldc " + operador1 + "\t;\n" +
-                    "   ldc " + operador2 + "\t;\n" +
-                    "   imul\t\t;\n" +
-                    "   istore_" + getTablaSimbolos().numTotalSimbolos() + "\t;\n\n";
-        }
-        else if((!(ctx.SUMA() == null)) && (ctx.STRING() != null)){
-            //Se trata de una concatenacion
-            resultado = getResultado() + "   ldc " + operador1 + "\t;\n" +
-                    "   ldc " + operador2 + "\t;\n" +
-                    "   invokevirtual java/lang/String/valueOf(I)Ljava/lang/String;" +
-                    "   invokevirtual java/lang/String/concat(Ljava/lang/String;)Ljava/lang/String;" +
-                    "   astore_" + getTablaSimbolos().numTotalSimbolos() + "\t;\n\n";
-        }
-        else if((!(ctx.SUMA() == null)) && (ctx.STRING() == null)){
-            //Se trata de una suma normal entre enteros:
-            resultado = getResultado() + "   ldc " + operador1 + "\t;\n" +
-                    "   ldc " + operador2 + "\t;\n" +
-                    "   iadd\t\t;\n" +
-                    "   istore_" + getTablaSimbolos().numTotalSimbolos() + "\t;\n\n";
-        }
-        else if(!(ctx.RESTA() == null)){
-            resultado = getResultado() + "   ldc " + operador1 + "\t;\n" +
-                    "   ldc " + operador2 + "\t;\n" +
-                    "   isub\t\t;\n" +
-                    "   istore_" + getTablaSimbolos().numTotalSimbolos() + "\t;\n\n";
-        }
+        //Primero comprobaremos errores semánticos
+        if(tipo.equals("entero") && ctx.booleano().MAYORQUE() != null && ctx.booleano().ENTERO() != null){
+            int constante = Integer.parseInt(ctx.booleano().ENTERO().getText());
+            //Estamos comparando si un entero es menor que otro
 
+            codigoJasmin =  "   iload_" + registro + ";\n" +
+                    "   iconst_" + constante + "\n" +
+                    "   if_icmple elseLabel" + getGeneradorEtiquetas().getEtiquetasElseLabelGeneradas() +  ";\n\n" +
+
+            //Ahora tenemos que ver el then del condicional
+                    "   " + visitBloqueThen(ctx.bloqueThen()) +
+                    "   goto endLabel" + getGeneradorEtiquetas().getEtiquetasEndLabelGeneradas() + ";\n\n" +
+            //Ahora tenemos que ver el else del condicional;
+                    visitBloqueElse(ctx.bloqueElse()) + "\n" +
+                    getGeneradorEtiquetas().generaEtiquetaEndLabel() + ":\n\n";
+        }
+        return codigoJasmin;
+    }
+
+    @Override
+    public Object visitBooleano(LinguineParser.BooleanoContext ctx) {
+        //En primer lugar, tenemos que ver que la expresion booleana está completa
+        if(ctx.IDENTIFICADOR() == null){
+            //Se verifica que no hay una expresion booleana
+            System.out.println("[ERROR] --> Falta una variable o identificador en la expresion booleana");
+            setHayError(true);
+            return "";
+        }
+        else if((ctx.MAYORQUE() != null) && (ctx.MENORQUE() != null) && (ctx.MAYORIGUALQUE() != null) && (ctx.MENORIGUALQUE() == null) && ctx.IGUALQUE() != null){
+            System.out.println("[ERROR] --> No hay un operador en la expresion booleana");
+            setHayError(true);
+            return "";
+        }
+        else if(ctx.ENTERO() == null){
+            System.out.println("[ERROR] --> No hay un entero en la expresion booleana");
+            setHayError(true);
+            return "";
+        }
         return "";
     }
 
     @Override
-    public String visitCondicional(LinguineParser.CondicionalContext ctx) {
-        //TODO VISITOR DE UN CONDICIONAL, LO TENGO QUE HACER PERO CUANDO LLEGUE A CASA
-        //En primer lugar, tenemos que comprobar que la expresión está bien escrita
-        if(ctx.ABREPARENTESIS() == null){
-            //Se verifica que falta un ( en el if
-            System.out.println("[ERROR] --> Falta un ( en el if");
-            setHayError(true);
-            return null;
-        }
-        else if(ctx.booleano() == null){
-            //Se verifica que falta un
-            System.out.println("[ERROR] --> Error en la expresion booleana del if");
-            setHayError(true);
-            return null;
-        }
-        else if(ctx.CIERRAPARENTESIS() == null){
+    public Object visitBloqueThen(LinguineParser.BloqueThenContext ctx) {
 
-        }
+        return visitChildren(ctx);
+    }
+
+    @Override
+    public Object visitBloqueElse(LinguineParser.BloqueElseContext ctx) {
+        return getGeneradorEtiquetas().generaEtiquetaElse() + ":\n" + visitChildren(ctx);
+    }
+
+    @Override
+    public Object visitMatch(LinguineParser.MatchContext ctx) {
+        String nombreVariable = ctx.IDENTIFICADOR().getText();
+        int registroVariable = getTablaSimbolos().getTabla().get(nombreVariable).getRegistro();
+        Object valorVariable = getTablaSimbolos().getTabla().get(nombreVariable).getValor();
+        String codigoJasmin = "";
+
+        codigoJasmin = "   ldc " + valorVariable + "\n" +
+                "   invokestatic Codigo/match(I)Ljava/lang/String;\n" +
+                "   astore_" + registroVariable + "\n" +
+                ".method public static match(I)Ljava/lang/String;\n" +
+                "   .limit stack 2\n" +
+                "   .limit stack 1\n" +
+                "   iload_" + registroVariable + "\n" +
+                "   iconst_" + ctx.ENTERO(0).getText() + "\n" +
+                "   if_icmpne M" + getGeneradorEtiquetas().getEtiquetasMatchGeneradas() +
+                "   ldc " + ctx.STRING(0) + "\n" +
+                "   areturn\n" +
+                getGeneradorEtiquetas().generaEtiquetaMatch() + ":\n" +
+                "   iload_" + registroVariable + "\n" +
+                "   iconst_" + ctx.ENTERO(1).getText() + "\n" +
+                "   if_icmpne M" + getGeneradorEtiquetas().getEtiquetasMatchGeneradas() + "\n" +
+                "   ldc " + ctx.STRING(1) + "\n" +
+                "   areturn\n" +
+                getGeneradorEtiquetas().generaEtiquetaMatch() + ":\n" +
+                "   iload_" + registroVariable + "\n" +
+                "   iconst_" + ctx.DEFAULT().getText() + "\n" +
+                "   if_icmpne M" + getGeneradorEtiquetas().getEtiquetasMatchGeneradas() +
+                "   ldc " + ctx.STRING(2) + "\n" +
+                "   areturn\n" +
+                ".end method\n\n";
 
 
+        return codigoJasmin;
+    }
 
-
-
+    @Override
+    public Object visitShow(LinguineParser.ShowContext ctx) {
         return null;
     }
 
@@ -192,11 +253,7 @@ public class MiVisitor extends LinguineParserBaseVisitor<String>{
         this.hayError = hayError;
     }
 
-    public String getResultado() {
-        return resultado;
-    }
-
-    public void setResultado(String resultado) {
-        this.resultado = resultado;
+    public GeneradorEtiquetas getGeneradorEtiquetas() {
+        return generadorEtiquetas;
     }
 }

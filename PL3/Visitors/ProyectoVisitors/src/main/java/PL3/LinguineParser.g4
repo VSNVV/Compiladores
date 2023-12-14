@@ -21,21 +21,21 @@ saltoInstruccion: INTRO;
 
 asignacion: ASINGACION IDENTIFICADOR IGUAL (expresion | llamadaFuncion | ENTERO | STRING);
 
-condicional: IF ABREPARENTESIS booleano CIERRAPARENTESIS sentenciaThen sentenciaElseIf? sentenciaElse;
+condicional: IF ABREPARENTESIS booleano CIERRAPARENTESIS bloqueThen sentenciaElseIf? bloqueElse;
 
-sentenciaElseIf: ELSE IF ABREPARENTESIS expresion CIERRAPARENTESIS sentenciaThen;
+bloqueThen: THEN (instruccion|expresion);
 
-sentenciaThen: THEN ABREPARENTESIS? instruccion CIERRAPARENTESIS? (operador ABREPARENTESIS instruccion CIERRAPARENTESIS)*;
+bloqueElse: ELSE (instruccion|expresion);
 
-sentenciaElse: ELSE ABREPARENTESIS? instruccion CIERRAPARENTESIS?;
+sentenciaElseIf: ELSE IF ABREPARENTESIS expresion CIERRAPARENTESIS bloqueThen;
 
 declaracionFuncion: FUNCION IDENTIFICADOR ABREPARENTESIS parametros? CIERRAPARENTESIS FLECHA instruccion;
 
 llamadaFuncion: IDENTIFICADOR ABREPARENTESIS parametros? CIERRAPARENTESIS;
 
-match: MATCH (expresion | llamadaFuncion) WITH (INTRO? OR (operando | DEFAULT) | FLECHA expresion)+;
+match: MATCH IDENTIFICADOR WITH OR ENTERO FLECHA STRING OR ENTERO FLECHA STRING OR DEFAULT FLECHA STRING;
 
-sentenciaWhile: WHILE ABREPARENTESIS expresion CIERRAPARENTESIS;
+sentenciaWhile: WHILE ABREPARENTESIS booleano CIERRAPARENTESIS;
 
 sentenciaFor: FOR ABREPARENTESIS CIERRAPARENTESIS;
 

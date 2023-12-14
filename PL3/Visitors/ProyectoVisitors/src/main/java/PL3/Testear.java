@@ -15,7 +15,10 @@ public class Testear{
 //        if (inputFile != null) {
 //            is = new FileInputStream(inputFile);
 //        }
-        CharStream input = CharStreams.fromString("let x = \"hola\" + 4;");
+        //CharStream input = CharStreams.fromString("let x = 5;");
+        //CharStream input = CharStreams.fromString("let x = 2 + 3");
+        //CharStream input = CharStreams.fromString("let x = 5;\r\nif (x > 2) then let y = 1 else let y = 0;");
+        CharStream input = CharStreams.fromString("let x = 1;\r\nmatch x with\r\n| 1 -> \"One\"\r\n| 2 -> \"Two\"\r\n| ? -> \"Other\";");
         LinguineLexer lexer = new LinguineLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         LinguineParser parser = new LinguineParser(tokens);
@@ -23,8 +26,9 @@ public class Testear{
 
         LinguineParser.ProgramaContext tree = parser.programa();
         TablaSimbolos tb = new TablaSimbolos();
-        MiVisitor nv = new MiVisitor(tb);
-        String resultado = nv.visitPrograma(tree);
+        GeneradorEtiquetas ge = new GeneradorEtiquetas();
+        MiVisitor nv = new MiVisitor(tb, ge);
+        Object resultado = nv.visitPrograma(tree);
         //Si no hay error, se muestra el código Jasmin
         if(!nv.getHayError()){
             System.out.println("El código jazmin generado es el siguiente:\n\n");
@@ -39,10 +43,12 @@ public class Testear{
                     + resultado
                     + "  return" + "\n"
                     + ".end method" + "\n"
+                    + "\n\n--------======[TABLA DE SIMBOLOS]======--------\n"
             );
+            nv.getTablaSimbolos().imprimeTabla();
         }
         else{
-            System.out.println("El codigo Jamsin no se ha generado porque ha habido un error de compilacion");
+            System.out.println("El codigo Jamsin no se ha generado porque ha habido un error semantico");
         }
     }
 }

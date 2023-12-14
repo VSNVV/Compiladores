@@ -41,23 +41,23 @@ public interface LinguineParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCondicional(LinguineParser.CondicionalContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LinguineParser#bloqueThen}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBloqueThen(LinguineParser.BloqueThenContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LinguineParser#bloqueElse}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBloqueElse(LinguineParser.BloqueElseContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LinguineParser#sentenciaElseIf}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitSentenciaElseIf(LinguineParser.SentenciaElseIfContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LinguineParser#sentenciaThen}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSentenciaThen(LinguineParser.SentenciaThenContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LinguineParser#sentenciaElse}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSentenciaElse(LinguineParser.SentenciaElseContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LinguineParser#declaracionFuncion}.
 	 * @param ctx the parse tree

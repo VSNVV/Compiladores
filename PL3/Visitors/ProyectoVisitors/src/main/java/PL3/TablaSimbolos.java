@@ -1,42 +1,56 @@
 package PL3;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 
 public class TablaSimbolos {
     //Atributos de la clase TablaSimbolos
-    private final HashMap<String, String> tabla;
+    private final HashMap<String, InfoSimbolo> tabla;
 
     //Métodos de la clase TablaSimbolos
 
     //Constructor
     public TablaSimbolos() {
         // Inicializar el mapa de símbolos aquí
-        this.tabla = new HashMap <String, String>();
+        this.tabla = new HashMap<>();
     }
 
     //Metodo para anadir simbolos a la tabla
-    public void anadirSimbolo(String simbolo, String valor) {
-        getTabla().put(simbolo, valor);
+    public void anadirSimbolo(String simbolo, Object valor, String tipo) {
+        //Primero debemos comprobar si el simbolo ya está registrado en la tabla
+        if(getTabla().get(simbolo) != null){
+            //El simbolo existe, por tanto, lo tenemos que actualizar
+            actualizarSimbolo(simbolo, valor, tipo);
+        }
+        else{
+            getTabla().put(simbolo, new InfoSimbolo(valor, tipo, numTotalSimbolos()));
+        }
     }
 
-    //Metodo para obtener el valor de un simbolo determinado
-    public String getSymbolValue(String simbolo) {
-        return getTabla().get(simbolo);
-    }
-
-    //Metodo para actualizar el valor de un simbolo determinado
-    public void updateSymbolValue(String simbolo, String nuevoValor) {
+    //Método para borrar un símbolo
+    public void borrarSimbolo(String simbolo){
         getTabla().remove(simbolo);
-        getTabla().put(simbolo, nuevoValor);
     }
 
-    //Método que devuelve el numero total de símbolos pero en string
-    public String numTotalSimbolos(){
-        return String.valueOf(getTabla().size());
+    //Método para actualizar la información de un símbolo
+    public void actualizarSimbolo(String simbolo, Object valor, String tipo){
+        getTabla().get(simbolo).setValor(valor);
+        getTabla().get(simbolo).setTipo(tipo);
+    }
+
+
+    public int numTotalSimbolos(){
+        return getTabla().size();
+    }
+
+    public void imprimeTabla(){
+        getTabla().forEach((clave, valor) ->
+                System.out.println("Nombre: " + clave + "\tValor: " + valor.getValor() +
+                        "\tTipo: " + valor.getTipo() + "\tRegistro: " + valor.getRegistro()));
     }
 
     //Método Get
-    public HashMap<String, String> getTabla() {
+    public HashMap<String, InfoSimbolo> getTabla() {
         return this.tabla;
     }
 }

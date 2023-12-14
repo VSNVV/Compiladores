@@ -59,7 +59,20 @@
       <recent name="C:\Users\victorsanavia\Documents\Repositorios git\Compiladores\PL3\Visitors\ProyectoVisitors\src\main\java\PL3" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Testear">
+    <configuration name="Pruebas" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="PL3.Pruebas" />
+      <module name="ProyectoVisitors" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="PL3.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Testear" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="PL3.Testear" />
       <module name="ProyectoVisitors" />
@@ -76,6 +89,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Testear" />
+        <item itemvalue="Application.Pruebas" />
       </list>
     </recent_temporary>
   </component>
@@ -108,7 +122,11 @@
       <workItem from="1702461639023" duration="2776000" />
       <workItem from="1702480076547" duration="47000" />
       <workItem from="1702480138275" duration="90000" />
-      <workItem from="1702480238727" duration="1642000" />
+      <workItem from="1702480238727" duration="21917000" />
+      <workItem from="1702556122192" duration="199000" />
+      <workItem from="1702556334179" duration="1343000" />
+      <workItem from="1702557686598" duration="3214000" />
+      <workItem from="1702564523070" duration="20154000" />
     </task>
     <servers />
   </component>
@@ -117,5 +135,31 @@
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.bat" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/PL3/MiVisitor.java</url>
+          <line>202</line>
+          <properties class="PL3.MiVisitor" method="visitMatch">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
