@@ -17,6 +17,7 @@ public class Testear{
 //        }
         //CharStream input = CharStreams.fromString("let x = 5;"); //Funciona
         //CharStream input = CharStreams.fromString("let x = 2 + 3"); //Funciona
+        //CharStream input = CharStreams.fromString("let x = \"hola\" + 4;"); //Funciona
         //CharStream input = CharStreams.fromString("let x = 5;\r\nif (x > 2) then let y = 1 else let y = 0;"); //Funciona
         //CharStream input = CharStreams.fromString("let x = 1;\r\nmatch x with\r\n| 1 -> \"One\"\r\n| 2 -> \"Two\"\r\n| ? -> \"Other\";"); //Funciona
         CharStream input = CharStreams.fromString("let x = 0;\r\nwhile (x < 10) {\r\nshow(x);\r\nlet x = x + 1;\r\n};");

@@ -137,15 +137,21 @@ public interface LinguineParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBooleano(LinguineParser.BooleanoContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LinguineParser#operador}.
+	 * Visit a parse tree produced by {@link LinguineParser#operadorAritmetico}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitOperador(LinguineParser.OperadorContext ctx);
+	T visitOperadorAritmetico(LinguineParser.OperadorAritmeticoContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LinguineParser#operando}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitOperando(LinguineParser.OperandoContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LinguineParser#numero}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumero(LinguineParser.NumeroContext ctx);
 }

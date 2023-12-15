@@ -53,17 +53,12 @@ parametros: (operando (COMA operando)*
 
 show: SHOW ABREPARENTESIS expresion CIERRAPARENTESIS;
 
-expresion: (ENTERO|FLOAT) DIVISION (ENTERO|FLOAT)
-         | (ENTERO|FLOAT) MULTIPLICACION (ENTERO|FLOAT)
-         | STRING MULTIPLICACION (ENTERO|FLOAT)
-         | (ENTERO|FLOAT) SUMA (ENTERO|FLOAT)
-         | (ENTERO|FLOAT) RESTA (ENTERO|FLOAT)
-         | STRING SUMA (ENTERO|FLOAT)
-         | (ENTERO|FLOAT)
-         | IDENTIFICADOR
-         | IDENTIFICADOR SUMA (ENTERO|FLOAT)
-         | IDENTIFICADOR RESTA (ENTERO|FLOAT)
+expresion: numero operadorAritmetico numero
+         | STRING operadorAritmetico numero
+         | IDENTIFICADOR operadorAritmetico numero
          | IDENTIFICADOR COMA IDENTIFICADOR
+         | numero
+         | IDENTIFICADOR
          | STRING
          ;
 
@@ -77,6 +72,8 @@ booleano: IDENTIFICADOR MAYORQUE ENTERO
         | FALSE
         ;
 
-operador: SUMA | RESTA | MULTIPLICACION | DIVISION | MAYORQUE | MENORIGUALQUE;
+operadorAritmetico: SUMA | RESTA | MULTIPLICACION | DIVISION;
 
 operando: STRING | ENTERO;
+
+numero: ENTERO | FLOAT;
