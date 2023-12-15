@@ -126,7 +126,7 @@
       <workItem from="1702556122192" duration="199000" />
       <workItem from="1702556334179" duration="1343000" />
       <workItem from="1702557686598" duration="3214000" />
-      <workItem from="1702564523070" duration="20154000" />
+      <workItem from="1702564523070" duration="27119000" />
     </task>
     <servers />
   </component>
@@ -146,20 +146,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/PL3/MiVisitor.java</url>
-          <line>202</line>
-          <properties class="PL3.MiVisitor" method="visitMatch">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

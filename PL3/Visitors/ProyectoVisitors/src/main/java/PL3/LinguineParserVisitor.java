@@ -53,11 +53,29 @@ public interface LinguineParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBloqueElse(LinguineParser.BloqueElseContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LinguineParser#sentenciaElseIf}.
+	 * Visit a parse tree produced by {@link LinguineParser#copiaCadena}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSentenciaElseIf(LinguineParser.SentenciaElseIfContext ctx);
+	T visitCopiaCadena(LinguineParser.CopiaCadenaContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LinguineParser#concatenarCadenas}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConcatenarCadenas(LinguineParser.ConcatenarCadenasContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LinguineParser#extraerCadena}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExtraerCadena(LinguineParser.ExtraerCadenaContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LinguineParser#arrayDeNumeros}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayDeNumeros(LinguineParser.ArrayDeNumerosContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LinguineParser#declaracionFuncion}.
 	 * @param ctx the parse tree
@@ -88,6 +106,12 @@ public interface LinguineParserVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSentenciaFor(LinguineParser.SentenciaForContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LinguineParser#bloqueInstrucciones}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBloqueInstrucciones(LinguineParser.BloqueInstruccionesContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LinguineParser#parametros}.
 	 * @param ctx the parse tree

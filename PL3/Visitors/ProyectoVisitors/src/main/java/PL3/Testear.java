@@ -15,10 +15,11 @@ public class Testear{
 //        if (inputFile != null) {
 //            is = new FileInputStream(inputFile);
 //        }
-        //CharStream input = CharStreams.fromString("let x = 5;");
-        //CharStream input = CharStreams.fromString("let x = 2 + 3");
-        //CharStream input = CharStreams.fromString("let x = 5;\r\nif (x > 2) then let y = 1 else let y = 0;");
-        CharStream input = CharStreams.fromString("let x = 1;\r\nmatch x with\r\n| 1 -> \"One\"\r\n| 2 -> \"Two\"\r\n| ? -> \"Other\";");
+        //CharStream input = CharStreams.fromString("let x = 5;"); //Funciona
+        //CharStream input = CharStreams.fromString("let x = 2 + 3"); //Funciona
+        //CharStream input = CharStreams.fromString("let x = 5;\r\nif (x > 2) then let y = 1 else let y = 0;"); //Funciona
+        //CharStream input = CharStreams.fromString("let x = 1;\r\nmatch x with\r\n| 1 -> \"One\"\r\n| 2 -> \"Two\"\r\n| ? -> \"Other\";"); //Funciona
+        CharStream input = CharStreams.fromString("let x = 0;\r\nwhile (x < 10) {\r\nshow(x);\r\nlet x = x + 1;\r\n};");
         LinguineLexer lexer = new LinguineLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         LinguineParser parser = new LinguineParser(tokens);

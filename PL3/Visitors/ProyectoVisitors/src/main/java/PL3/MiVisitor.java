@@ -214,7 +214,7 @@ public class MiVisitor extends LinguineParserBaseVisitor<Object>{
                 "   .limit stack 1\n" +
                 "   iload_" + registroVariable + "\n" +
                 "   iconst_" + ctx.ENTERO(0).getText() + "\n" +
-                "   if_icmpne M" + getGeneradorEtiquetas().getEtiquetasMatchGeneradas() +
+                "   if_icmpne M" + getGeneradorEtiquetas().getEtiquetasMatchGeneradas() + "\n" +
                 "   ldc " + ctx.STRING(0) + "\n" +
                 "   areturn\n" +
                 getGeneradorEtiquetas().generaEtiquetaMatch() + ":\n" +
@@ -226,18 +226,35 @@ public class MiVisitor extends LinguineParserBaseVisitor<Object>{
                 getGeneradorEtiquetas().generaEtiquetaMatch() + ":\n" +
                 "   iload_" + registroVariable + "\n" +
                 "   iconst_" + ctx.DEFAULT().getText() + "\n" +
-                "   if_icmpne M" + getGeneradorEtiquetas().getEtiquetasMatchGeneradas() +
+                "   if_icmpne M" + getGeneradorEtiquetas().getEtiquetasMatchGeneradas() + "\n" +
                 "   ldc " + ctx.STRING(2) + "\n" +
                 "   areturn\n" +
                 ".end method\n\n";
 
+        return codigoJasmin;
+    }
+
+    @Override
+    public Object visitSentenciaWhile(LinguineParser.SentenciaWhileContext ctx) {
+        String codigoJasmin = "";
+
+        String nombreVariable = ctx.booleano(0).IDENTIFICADOR().getText();
+        Object valor = getTablaSimbolos().getTabla().get(nombreVariable).getValor();
+        int registro = getTablaSimbolos().getTabla().get(nombreVariable).getRegistro();
+        //Añadimos a la tabla de simbolos la constan
+
+        codigoJasmin = "   iload_" + registro + "\n" +
+                "   ldc " + ctx.booleano(0).ENTERO() + "\n" +
+                "   "
 
         return codigoJasmin;
     }
 
     @Override
     public Object visitShow(LinguineParser.ShowContext ctx) {
-        return null;
+        String codigoJasmin = "";
+
+
     }
 
     //Método get de la tabla de simbolos
