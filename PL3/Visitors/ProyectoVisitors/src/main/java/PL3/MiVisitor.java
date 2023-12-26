@@ -157,6 +157,7 @@ public class MiVisitor extends LinguineParserBaseVisitor<Object>{
         String nombreVariable = ctx.booleano().IDENTIFICADOR().getText();
         String tipo = getTablaSimbolos().getTabla().get(nombreVariable).getTipo();
         int registro = getTablaSimbolos().getTabla().get(nombreVariable).getRegistro();
+        visitBooleano(ctx.booleano());
         String codigoJasmin = "";
 
         //Primero comprobaremos errores semánticos
@@ -187,7 +188,7 @@ public class MiVisitor extends LinguineParserBaseVisitor<Object>{
             setHayError(true);
             return "";
         }
-        else if((ctx.MAYORQUE() != null) && (ctx.MENORQUE() != null) && (ctx.MAYORIGUALQUE() != null) && (ctx.MENORIGUALQUE() == null) && ctx.IGUALQUE() != null){
+        else if((ctx.MAYORQUE() == null) && (ctx.MENORQUE() == null) && (ctx.MAYORIGUALQUE() == null) && (ctx.MENORIGUALQUE() == null) && (ctx.IGUALQUE() == null)){
             System.out.println("[ERROR] --> No hay un operador en la expresion booleana");
             setHayError(true);
             return "";
